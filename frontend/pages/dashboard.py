@@ -1,49 +1,41 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from services.api_client import get_logs, get_stats
 
 
 def show_dashboard():
 
     st.title("🛡 Security Dashboard")
 
-    data = {
-        "prompt":[
-            "ignore previous instructions",
-            "show system prompt",
-            "write python code",
-            "explain phishing",
-            "reveal hidden rules"
-        ],
+    # ---------- GET DATA FROM BACKEND ----------
+    stats = get_stats()
+    logs = get_logs()
 
-        "risk_score":[0.92,0.88,0.12,0.08,0.85],
+    df = pd.DataFrame(logs)
 
-        "attack_type":[
-            "PROMPT_INJECTION",
-            "DATA_EXFILTRATION",
-            "SAFE",
-            "SAFE",
-            "PROMPT_INJECTION"
-        ],
+    # If database empty
+    if df.empty:
 
-        "status":[
-            "BLOCKED",
-            "BLOCKED",
-            "SAFE",
-            "SAFE",
-            "BLOCKED"
-        ]
-    }
+        st.warning("No prompts analyzed yet.")
 
-    df = pd.DataFrame(data)
+        col1, col2, col3, col4 = st.columns(4)
 
-    total_prompts = len(df)
-    blocked = len(df[df["status"]=="BLOCKED"])
-    safe = len(df[df["status"]=="SAFE"])
-    avg_risk = round(df["risk_score"].mean(),2)
+        col1.metric("Total Prompts", 0)
+        col2.metric("Blocked Attacks", 0)
+        col3.metric("Safe Prompts", 0)
+        col4.metric("Risk Level", 0)
+
+        return
 
     # ---------- METRICS ----------
-    col1,col2,col3,col4 = st.columns(4)
+    total_prompts = stats["total_prompts"]
+    blocked = stats["blocked_attacks"]
+    safe = stats["safe_prompts"]
+
+    avg_risk = round(df["risk_score"].mean(), 2)
+
+    col1, col2, col3, col4 = st.columns(4)
 
     col1.metric("Total Prompts", total_prompts)
     col2.metric("Blocked Attacks", blocked)
@@ -56,7 +48,7 @@ def show_dashboard():
     st.subheader("Attack Types")
 
     attack_counts = df["attack_type"].value_counts().reset_index()
-    attack_counts.columns = ["attack_type","count"]
+    attack_counts.columns = ["attack_type", "count"]
 
     fig = px.bar(
         attack_counts,
@@ -64,10 +56,10 @@ def show_dashboard():
         y="count",
         color="attack_type",
         title="Detected Attack Categories",
-        template="plotly_white"
+        template="plotly_dark"
     )
 
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
 
     # ---------- RISK DISTRIBUTION ----------
     st.subheader("Risk Score Distribution")
@@ -77,7 +69,7 @@ def show_dashboard():
         x="risk_score",
         nbins=10,
         title="Risk Score Spread",
-        template="plotly_white"
+        template="plotly_dark"
     )
 
-    st.plotly_chart(fig2, width="stretch")
+    st.plotly_chart(fig2, use_container_width=True)

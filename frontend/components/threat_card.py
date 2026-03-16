@@ -1,22 +1,24 @@
 import streamlit as st
 
-def show_threat(status, attack_type):
 
-    st.subheader("Threat Analysis")
+def show_threat(status, attack_type):
 
     if status == "BLOCKED":
 
         st.markdown(
-            f"""
+            """
             <div style="
+                background-color:#2b0000;
                 padding:18px;
                 border-radius:10px;
-                background-color:#fee2e2;
                 border-left:6px solid red;
+                color:white;
                 font-size:18px;
+                font-weight:600;
             ">
-            🚨 <b>Attack Detected</b><br>
-            Type: {attack_type}
+            🚨 PROMPT BLOCKED<br>
+            Attack Type: PROMPT INJECTION<br><br>
+            The prompt contains instructions that attempt to override AI safety rules.
             </div>
             """,
             unsafe_allow_html=True
@@ -27,11 +29,13 @@ def show_threat(status, attack_type):
         st.markdown(
             """
             <div style="
+                background-color:#0b3d2e;
                 padding:18px;
                 border-radius:10px;
-                background-color:#dcfce7;
-                border-left:6px solid green;
+                border-left:6px solid #00ff9c;
+                color:white;
                 font-size:18px;
+                font-weight:600;
             ">
             ✅ Prompt is Safe
             </div>

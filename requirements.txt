@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+streamlit
+requests
+pandas
+plotly
+streamlit-option-menu
+streamlit-extras
+torch
+transformers
+datasets
+scikit-learn
+numpy
+sqlite-utils

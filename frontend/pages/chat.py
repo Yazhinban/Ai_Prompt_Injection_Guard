@@ -3,6 +3,8 @@ from components.prompt_box import prompt_input
 from components.risk_indicator import show_risk
 from components.threat_card import show_threat
 from components.response_box import show_response
+from services.api_client import analyze_prompt, chat_prompt
+
 
 def show_chat():
 
@@ -12,15 +14,23 @@ def show_chat():
 
     if send and prompt:
 
-        # dummy data for now
-        risk_score = 0.82
-        status = "BLOCKED"
-        attack_type = "PROMPT_INJECTION"
+        result = analyze_prompt(prompt)
+
+        risk_score = result["risk_score"]
+        attack_type = result["attack_type"]
+        status = result["status"]
 
         show_risk(risk_score)
 
-        show_threat(status,attack_type)
+        show_threat(status, attack_type)
 
-        if status == "SAFE":
+        # 🚫 BLOCK AI RESPONSE
+        if status == "BLOCKED":
 
-            show_response("This is an AI response.")
+            st.warning("⚠️ This prompt was blocked due to security risk.")
+
+        else:
+
+            chat = chat_prompt(prompt)
+
+            show_response(chat["response"])
