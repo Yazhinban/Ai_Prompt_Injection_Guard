@@ -1,10 +1,14 @@
-import random
+LOW_THRESHOLD = 0.3
+HIGH_THRESHOLD = 0.7
 
-def calculate_risk(prompt, detected):
 
-    base_score = random.uniform(0.05,0.4)
+def decision_engine(score):
 
-    if detected:
-        base_score = random.uniform(0.8,0.95)
+    if score < LOW_THRESHOLD:
+        return "SAFE"
 
-    return round(base_score,2)
+    elif score >= HIGH_THRESHOLD:
+        return "BLOCKED"
+
+    else:
+        return "REVIEW"

@@ -8,13 +8,11 @@ def show_dashboard():
 
     st.title("🛡 Security Dashboard")
 
-    # ---------- GET DATA FROM BACKEND ----------
     stats = get_stats()
     logs = get_logs()
 
     df = pd.DataFrame(logs)
 
-    # If database empty
     if df.empty:
 
         st.warning("No prompts analyzed yet.")
@@ -28,9 +26,8 @@ def show_dashboard():
 
         return
 
-    # ---------- METRICS ----------
     total_prompts = stats["total_prompts"]
-    blocked = stats["blocked_attacks"]
+    blocked = stats["blocked_prompts"]
     safe = stats["safe_prompts"]
 
     avg_risk = round(df["risk_score"].mean(), 2)
@@ -44,7 +41,6 @@ def show_dashboard():
 
     st.divider()
 
-    # ---------- ATTACK TYPE GRAPH ----------
     st.subheader("Attack Types")
 
     attack_counts = df["attack_type"].value_counts().reset_index()
@@ -61,7 +57,6 @@ def show_dashboard():
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # ---------- RISK DISTRIBUTION ----------
     st.subheader("Risk Score Distribution")
 
     fig2 = px.histogram(

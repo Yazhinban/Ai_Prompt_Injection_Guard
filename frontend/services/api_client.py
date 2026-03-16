@@ -40,3 +40,22 @@ def get_stats():
     response = requests.get(f"{API_URL}/stats")
 
     return response.json()
+
+
+# -------- ADMIN REVIEW FUNCTIONS --------
+
+def get_admin_reviews():
+
+    response = requests.get(f"{API_URL}/admin/reviews")
+
+    return response.json()
+
+
+def approve_prompt(prompt_id):
+
+    requests.post(f"{API_URL}/admin/approve/{prompt_id}")
+
+
+def reject_prompt(prompt_id):
+
+    requests.post(f"{API_URL}/admin/reject/{prompt_id}")

@@ -1,15 +1,4 @@
-import sqlite3
-
-DB_NAME = "prompt_logs.db"
-
-
-def get_connection():
-    conn = sqlite3.connect(DB_NAME, check_same_thread=False)
-    return conn
-
-
-def init_db():
-    conn = get_connection()
+def create_tables(conn):
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -25,4 +14,3 @@ def init_db():
                    """)
 
     conn.commit()
-    conn.close()

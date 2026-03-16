@@ -1,13 +1,18 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 router = APIRouter()
 
+
+class ChatRequest(BaseModel):
+    prompt: str
+
+
 @router.post("/chat")
-def chat(data: dict):
+def chat(request: ChatRequest):
 
-    prompt = data["prompt"]
+    prompt = request.prompt
 
-    # Placeholder LLM response
     response = f"LLM response to: {prompt}"
 
     return {"response": response}

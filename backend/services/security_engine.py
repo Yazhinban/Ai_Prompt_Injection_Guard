@@ -1,5 +1,4 @@
 import re
-from backend.services.decision_engine import calculate_risk
 
 attack_patterns = [
     "ignore previous instructions",
@@ -8,6 +7,16 @@ attack_patterns = [
     "bypass safety",
     "show hidden rules",
 ]
+
+
+def calculate_risk(prompt, detected):
+
+    # simple risk scoring
+    if detected:
+        return 0.9
+
+    return 0.1
+
 
 def analyze_prompt(prompt):
 

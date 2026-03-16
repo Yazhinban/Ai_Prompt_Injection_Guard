@@ -1,15 +1,17 @@
 from fastapi import FastAPI
-from backend.api import chat_api, prompt_api, logs_api, stats_api
+from backend.api.prompt_api import router as prompt_router
+from backend.api.logs_api import router as logs_router
+from backend.api.stats_api import router as stats_router
+from backend.api.chat_api import router as chat_router
+from backend.api.admin_api import router as admin_router
+from backend.database.db import init_db
 
-app = FastAPI(
-    title="AI Prompt Injection Guard"
-)
+app = FastAPI()
 
-@app.get("/")
-def home():
-    return {"message": "AI Prompt Injection Guard API Running"}
+init_db()
 
-app.include_router(prompt_api.router)
-app.include_router(chat_api.router)
-app.include_router(logs_api.router)
-app.include_router(stats_api.router)
+app.include_router(prompt_router)
+app.include_router(logs_router)
+app.include_router(stats_router)
+app.include_router(chat_router)
+app.include_router(admin_router)

@@ -3,7 +3,7 @@ from components.prompt_box import prompt_input
 from components.risk_indicator import show_risk
 from components.threat_card import show_threat
 from components.response_box import show_response
-from services.api_client import analyze_prompt, chat_prompt
+from services.api_client import analyze_prompt
 
 
 def show_chat():
@@ -24,13 +24,17 @@ def show_chat():
 
         show_threat(status, attack_type)
 
-        # 🚫 BLOCK AI RESPONSE
+        # BLOCKED
         if status == "BLOCKED":
 
-            st.warning("⚠️ This prompt was blocked due to security risk.")
+            st.warning("⚠️ Prompt blocked due to security risk.")
 
-        else:
+        # UNDER REVIEW
+        elif status == "UNDER_REVIEW":
 
-            chat = chat_prompt(prompt)
+            st.info("🛑 Prompt sent for admin review.")
 
-            show_response(chat["response"])
+        # SAFE
+        elif status == "SAFE":
+
+            show_response(result["response"])
