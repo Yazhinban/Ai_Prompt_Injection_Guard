@@ -1,7 +1,6 @@
 import streamlit as st
 from services.api_client import get_admin_reviews, approve_prompt, reject_prompt
 
-
 def show_admin_review():
 
     st.title("🛠 Admin Review Panel")
@@ -9,15 +8,14 @@ def show_admin_review():
     reviews = get_admin_reviews()
 
     if not reviews:
-
         st.success("No prompts waiting for review.")
         return
 
     for r in reviews:
 
-        prompt_id = r[0]
-        prompt = r[1]
-        risk_score = r[2]
+        prompt_id = r["id"]
+        prompt = r["prompt"]
+        risk_score = r["risk_score"]
 
         st.markdown("---")
 
@@ -28,7 +26,6 @@ def show_admin_review():
         col1, col2 = st.columns(2)
 
         with col1:
-
             if st.button(f"Approve {prompt_id}"):
 
                 approve_prompt(prompt_id)
@@ -38,7 +35,6 @@ def show_admin_review():
                 st.rerun()
 
         with col2:
-
             if st.button(f"Reject {prompt_id}"):
 
                 reject_prompt(prompt_id)

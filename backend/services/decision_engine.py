@@ -1,7 +1,6 @@
 LOW_THRESHOLD = 0.3
 HIGH_THRESHOLD = 0.7
 
-
 def decision_engine(score):
 
     if score < LOW_THRESHOLD:
