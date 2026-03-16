@@ -5,12 +5,30 @@ def show_risk(score):
     st.subheader("Risk Score")
 
     if score < 0.4:
-        st.success(f"Low Risk : {score}")
+        label = "Low Risk"
+        color = "green"
 
     elif score < 0.7:
-        st.warning(f"Medium Risk : {score}")
+        label = "Medium Risk"
+        color = "orange"
 
     else:
-        st.error(f"High Risk : {score}")
+        label = "High Risk"
+        color = "red"
+
+    st.markdown(
+        f"""
+        <div style="
+            padding:15px;
+            border-radius:10px;
+            border-left:6px solid {color};
+            background-color:rgba(0,0,0,0.05);
+            font-size:18px;
+        ">
+        <b>{label}</b> : {score}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.progress(score)

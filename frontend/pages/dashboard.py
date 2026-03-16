@@ -7,7 +7,6 @@ def show_dashboard():
 
     st.title("🛡 Security Dashboard")
 
-    # Example data (later will come from backend API)
     data = {
         "prompt":[
             "ignore previous instructions",
@@ -41,10 +40,9 @@ def show_dashboard():
     total_prompts = len(df)
     blocked = len(df[df["status"]=="BLOCKED"])
     safe = len(df[df["status"]=="SAFE"])
-
     avg_risk = round(df["risk_score"].mean(),2)
 
-    # ---------- STAT CARDS ----------
+    # ---------- METRICS ----------
     col1,col2,col3,col4 = st.columns(4)
 
     col1.metric("Total Prompts", total_prompts)
@@ -65,10 +63,11 @@ def show_dashboard():
         x="attack_type",
         y="count",
         color="attack_type",
-        title="Detected Attack Categories"
+        title="Detected Attack Categories",
+        template="plotly_white"
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # ---------- RISK DISTRIBUTION ----------
     st.subheader("Risk Score Distribution")
@@ -77,7 +76,8 @@ def show_dashboard():
         df,
         x="risk_score",
         nbins=10,
-        title="Risk Score Spread"
+        title="Risk Score Spread",
+        template="plotly_white"
     )
 
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig2, width="stretch")

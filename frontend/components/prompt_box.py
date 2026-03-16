@@ -7,10 +7,10 @@ def prompt_input():
     prompt = st.text_area(
         "",
         placeholder="Type a prompt to test AI security...",
-        height=150
+        height=160
     )
 
-    col1,col2 = st.columns([1,4])
+    col1, col2, col3 = st.columns([1,1,5])
 
     send = col1.button("Analyze")
 
